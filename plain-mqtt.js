@@ -2,20 +2,22 @@ var mqtt    = require('mqtt');
 
 var fs = require("fs");
 
-var mqttConf = JSON.parse(fs.readFileSync("mqtt.conf"));
+var myArgs = process.argv.slice(2);
+var payload = myArgs[1];
+
+var mqttConf = JSON.parse(fs.readFileSync(myArgs[0]));
 var connectionString = mqttConf.connectionString;
+var uri = mqttConf.uri;
 var pubTopic = mqttConf.pubTopic;
 var subTopic = mqttConf.subTopic;
 var clientId = mqttConf.clientId;
 var username = mqttConf.username;
 var password = mqttConf.password;
 
-var myArgs = process.argv.slice(2);
-var payload = myArgs[0];
 
 var conf = { 
        "clean": false, 
-       "clientId": "test", 
+       "clientId": clientId, 
        "username": username,
        "password": password, 
        "protocolId":"MQTT", 
@@ -25,7 +27,7 @@ var conf = {
     
 console.log(JSON.stringify(conf));
 
-var client  = mqtt.connect("mqtts://Hackathon.azure-devices.net", conf );
+var client  = mqtt.connect(uri, conf );
  
 client.on('connect', function () {
   //client.subscribe('presence');
