@@ -15,7 +15,7 @@ var payload = myArgs[0];
 
 var conf = { 
        "clean": false, 
-       "clientId": clientId, 
+       "clientId": "test", 
        "username": username,
        "password": password, 
        "protocolId":"MQTT", 
