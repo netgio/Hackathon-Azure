@@ -54,17 +54,18 @@ client.on('connect', function () {
             console.log("sending: " + data);
         });
     // add "message" handler to send subTopic messages to serial
-    client.on('message', function (topic, message) {
-        // message is Buffer 
-        console.log("Rx'd Message on [" + topic + "]:" + message.toString());
-        //Append a newline to the end
-        sp.write(message + "\n", function(err, results) {
-                console.log('Serial err: ' + err);
-                console.log('Serial results: ' + results);
-            });
-        });
+
     });
 });
 
+client.on('message', function (topic, message) {
+    // message is Buffer 
+    console.log("Rx'd Message on [" + topic + "]:" + message.toString());
+    //Append a newline to the end
+    sp.write(message + "\n", function(err, results) {
+            console.log('Serial err: ' + err);
+            console.log('Serial results: ' + results);
+        });
+    });
 
   
