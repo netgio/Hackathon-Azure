@@ -8,8 +8,13 @@ var SerialPort = serialport.SerialPort; // localize object constructor
 var sp = new SerialPort("/dev/ttyS0", {
         baudRate:57600,
         parser: serialport.parsers.readline("\n")
-    });
-
+    }, true);
+    
+sp.on("open", function () {
+    console.log('Serial open');
+    // add "send" handler to send serial data to the pubTopic
+    
+});
 
 //TODO add cmd line error checking
 var myArgs = process.argv.slice(2);
@@ -44,18 +49,15 @@ client.on('connect', function () {
   // once connected, listen for data on the serial port.
   console.log("Connected");
   client.subscribe(subTopic);
-  // when the port is open
-  sp.on("open", function () {
-    console.log('Serial open');
-    // add "send" handler to send serial data to the pubTopic
-    sp.on("data", function (data) {
+  console.log("Subscribed");
+  
+  // Register serial data handler
+  sp.on("data", function (data) {
             //TODO add data validation here
+            console.log("Sending" + data);
             client.publish(pubTopic, data);
-            console.log("sending: " + data);
+            console.log("Sent");
         });
-    // add "message" handler to send subTopic messages to serial
-
-    });
 });
 
 client.on('message', function (topic, message) {
@@ -66,6 +68,6 @@ client.on('message', function (topic, message) {
             console.log('Serial err: ' + err);
             console.log('Serial results: ' + results);
         });
-    });
+});
 
   
